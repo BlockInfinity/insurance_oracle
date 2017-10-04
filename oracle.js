@@ -1,11 +1,27 @@
-const web3 = require("./blockchain/connector.js");
+'use strict';
 const request = require("request");
 const path = require("path");
 const fs = require("fs");
+const Web3 = require("web3");
+const oracleAddress = process.env.Oracle;
 
-const instanceOracle = web3.Oracle;
 
-console.log("instanceOracle", instanceOracle.address)
+let web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+
+if (!web3.isConnected()) {
+    throw new Error("web3 is not connected.")
+}
+
+web3.eth.defaultAccount = web3.eth.accounts[0]
+
+let abiPath = path.join(__dirname, 'insurance_contractDeployer', 'truffle', 'build', 'contracts', 'Oracle' + '.json');
+let abi_contract = fs.readFileSync(abiPath).toString();
+abi_contract = JSON.parse(abi_contract).abi;
+let contract = web3.eth.contract(abi_contract);
+let instanceOracle = contract.at(oracleAddress);
+
+console.log("Connected to new Oracle instance: ", instanceOracle.address)
+
 instanceOracle.Query(function(error, result) {
     if (!error) {
         console.log("in Query listener")
@@ -22,7 +38,7 @@ function requestApi(result) {
     let cbaddress = result.args.cbaddress
     let id = result.args.id
 
-    let abiPath = path.join(__dirname, 'insurance_contractDeployer', 'truffle','build','contracts', "FlightDelayContract.json");
+    let abiPath = path.join(__dirname, 'insurance_contractDeployer', 'truffle', 'build', 'contracts', "FlightDelayContract.json");
     let abi_contract = fs.readFileSync(abiPath).toString();
     abi_contract = JSON.parse(abi_contract).abi;
     let contract = web3.eth.contract(abi_contract);
@@ -37,7 +53,7 @@ function requestApi(result) {
     };
 
     function callback(error, response, body) {
-        console.log("body",body)
+        console.log("body", body)
         if (!error && response && response.statusCode == 200) {
             let info = JSON.parse(body);
             instanceFlightDelayContract.__callback(id, info[0].flight.flightStatus)
