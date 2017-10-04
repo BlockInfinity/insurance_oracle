@@ -8,6 +8,13 @@ var _ = require('underscore');
 var gulp = require('gulp');
 require('../gulpfile');
 
+let host;
+if (process.env.nodeUrl.includes("localhost")) {
+    host = "localhost";
+} else {
+    host = "contractdeployer";
+}
+
 
 var addresses;
 let cmd;
@@ -17,8 +24,8 @@ setInterval(checkAddresses, 3000);
 
 // ######### 
 function checkAddresses() {
-    request('http://contractdeployer:3001/getContractAddresses', (err, res, body) => {
-        if (err) { return console.log(chalk.red("Couldnt connect to the contractDeployer: "+ err)); }
+    request('http://' + host + ':3001/getContractAddresses', (err, res, body) => {
+        if (err) { return console.log(chalk.red("Couldnt connect to the contractDeployer: " + err)); }
         let obj = JSON.parse(body);
         let newAddresses = obj.contractAddresses;
         if (obj.contractAddresses && !_.isEqual(newAddresses, addresses)) {
@@ -28,7 +35,8 @@ function checkAddresses() {
 
             cmd = spawn("/usr/local/bin/node", ["oracle.js"], {
                 env: {
-                    Oracle: addresses.Oracle
+                    Oracle: addresses.Oracle,
+                    nodeUrl: process.env.nodeUrl
                 }
             });
 

@@ -5,11 +5,12 @@ const fs = require("fs");
 const Web3 = require("web3");
 const oracleAddress = process.env.Oracle;
 
+let urlNode = process.env.nodeUrl || "http://testrpc:8545";
+let web3 = new Web3(new Web3.providers.HttpProvider(urlNode));
 
-let web3 = new Web3(new Web3.providers.HttpProvider("http://testrpc:8545"));
-
+console.log("process.env.nodeUrl",process.env.nodeUrl)
 if (!web3.isConnected()) {
-    throw new Error("web3 is not connected.")
+    throw new Error(`web3 is not connected to ${urlNode}`)
 }
 
 web3.eth.defaultAccount = web3.eth.accounts[0]
