@@ -6,7 +6,7 @@ const Web3 = require("web3");
 const oracleAddress = process.env.Oracle;
 
 
-let web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+let web3 = new Web3(new Web3.providers.HttpProvider("http://testrpc:8545"));
 
 if (!web3.isConnected()) {
     throw new Error("web3 is not connected.")

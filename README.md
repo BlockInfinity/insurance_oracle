@@ -1,10 +1,17 @@
  
 ## Set up ##
 
+```
+
+git submodule update --remote --merge
+
 testrpc --mnemonic "my test example" --accounts 50
 
 cd ~/insurance/insurance_contractDeployer
-gulp run 
+npm run start
 
-cd ../oracle 
-gulp run 
+cd ../insurance_oracle 
+npm run start
+
+
+```

@@ -17,7 +17,7 @@ setInterval(checkAddresses, 3000);
 
 // ######### 
 function checkAddresses() {
-    request('http://localhost:3001/getContractAddresses', (err, res, body) => {
+    request('http://contractdeployer:3001/getContractAddresses', (err, res, body) => {
         if (err) { return console.log(chalk.red("Couldnt connect to the contractDeployer: "+ err)); }
         let obj = JSON.parse(body);
         let newAddresses = obj.contractAddresses;
@@ -26,7 +26,7 @@ function checkAddresses() {
 
             console.log(`New contract addresses retrieved: ${JSON.stringify(addresses)}`);
 
-            cmd = spawn("nodejs", ["oracle.js"], {
+            cmd = spawn("/usr/local/bin/node", ["oracle.js"], {
                 env: {
                     Oracle: addresses.Oracle
                 }

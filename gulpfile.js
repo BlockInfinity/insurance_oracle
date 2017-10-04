@@ -6,7 +6,7 @@ var chalk = require('chalk');
 
 gulp.task('run', function(cb) {
 
-    let cmd = spawn("nodejs", ["./processManager/processManager.js"]);
+    let cmd = spawn("node", ["./processManager/processManager.js"]);
     // let cmd = spawn("ls",["-l"]);
 
     cmd.stdout.on('data', function(data) {
