@@ -1,9 +1,10 @@
 'use strict';
 
-var path = require('path');
-var fs = require('fs')
-var Web3 = require("web3");
-var web3;
+const path = require('path');
+const fs = require('fs')
+const Web3 = require("web3");
+const pm = require("../processManager/processManager.js")
+let web3;
 
 try {
     // ##########################################################################################################
@@ -28,27 +29,17 @@ try {
     // ################################ Load deployed Contracts from truffle reposiroty #########################
     // ##########################################################################################################
 
-
-
-    var addressPath = path.join(__dirname, '..', 'insurance_contractDeployer', 'truffle', 'contracts', 'addresses.json');
-    var addresses = fs.readFileSync(addressPath).toString();
-    addresses = JSON.parse(addresses);
-
-    var abiPath;
-    var abi_contract;
-    var contract;
-    var instance;
-
-    var pathContracts = path.join(__dirname, '..', 'insurance_contractDeployer', 'truffle', 'build', 'contracts');
-
-    var files = fs.readdirSync(pathContracts);
+    let addresses = pm.getAddresses();
+    let abiPath;
+    let abi_contract;
+    let contract;
+    let instance;
+    let pathContracts = path.join(__dirname, '..', 'insurance_contractDeployer', 'truffle', 'build', 'contracts');
+    let files = fs.readdirSync(pathContracts);
 
     console.log("\n")
     for (let x in files) {
-        // if (files[x].toLowerCase() == "migrations.json" || files[x].toLowerCase() == "metacoin.json" || files[x].toLowerCase() == "convertlib.json") {
-        //     continue;
-        // }
-        var contractName = files[x].replace('.json', '');
+        let contractName = files[x].replace('.json', '');
         abiPath = path.join(__dirname, '..', 'insurance_contractDeployer', 'truffle', 'build', 'contracts', contractName + '.json');
         abi_contract = fs.readFileSync(abiPath).toString();
         // console.log(abi_contract)

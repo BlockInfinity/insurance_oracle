@@ -35,3 +35,8 @@ function checkAddresses() {
     });
 }
 
+module.exports = {
+    getAddresses: function() {
+        return addresses;
+    }
+}
