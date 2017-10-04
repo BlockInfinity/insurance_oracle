@@ -24,7 +24,7 @@ console.log("Connected to new Oracle instance: ", instanceOracle.address)
 
 instanceOracle.Query(function(error, result) {
     if (!error) {
-        console.log("in Query listener")
+        console.log("Query received.")
         requestApi(result);
     } else { throw error; }
 })
@@ -53,7 +53,7 @@ function requestApi(result) {
     };
 
     function callback(error, response, body) {
-        console.log("body", body)
+        console.log("Requested fraport API. Body:", body)
         if (!error && response && response.statusCode == 200) {
             let info = JSON.parse(body);
             instanceFlightDelayContract.__callback(id, info[0].flight.flightStatus)
