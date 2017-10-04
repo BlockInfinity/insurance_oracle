@@ -1,0 +1,3 @@
+[submodule "insurance_contractDeployer"]
+	path = insurance_contractDeployer
+	url = git@github.com:BlockInfinity/insurance_contractDeployer.git

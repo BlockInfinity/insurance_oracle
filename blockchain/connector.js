@@ -30,7 +30,7 @@ try {
 
 
 
-        var addressPath = path.join(__dirname, '..', '..', '..', 'contractDeployer', 'truffle', 'contracts', 'addresses.json');
+    var addressPath = path.join(__dirname, '..', 'insurance_contractDeployer', 'truffle', 'contracts', 'addresses.json');
     var addresses = fs.readFileSync(addressPath).toString();
     addresses = JSON.parse(addresses);
 
@@ -39,7 +39,7 @@ try {
     var contract;
     var instance;
 
-    var pathContracts = path.join(__dirname, '..', '..', '..', 'contractDeployer', 'truffle', 'build', 'contracts');
+    var pathContracts = path.join(__dirname, '..', 'insurance_contractDeployer', 'truffle', 'build', 'contracts');
 
     var files = fs.readdirSync(pathContracts);
 
@@ -49,7 +49,7 @@ try {
         //     continue;
         // }
         var contractName = files[x].replace('.json', '');
-        abiPath = path.join(__dirname, '..', '..', '..', 'contractDeployer', 'truffle', 'build', 'contracts', contractName + '.json');
+        abiPath = path.join(__dirname, '..', 'insurance_contractDeployer', 'truffle', 'build', 'contracts', contractName + '.json');
         abi_contract = fs.readFileSync(abiPath).toString();
         // console.log(abi_contract)
         abi_contract = JSON.parse(abi_contract).abi;

@@ -22,13 +22,12 @@ function requestApi(result) {
     let cbaddress = result.args.cbaddress
     let id = result.args.id
 
-    let abiPath = path.join(__dirname, '..', '..', '/truffle/build/contracts/', "FlightDelayContract.json");
+    let abiPath = path.join(__dirname, 'insurance_contractDeployer', 'truffle','build','contracts', "FlightDelayContract.json");
     let abi_contract = fs.readFileSync(abiPath).toString();
     abi_contract = JSON.parse(abi_contract).abi;
     let contract = web3.eth.contract(abi_contract);
     let instanceFlightDelayContract = contract.at(cbaddress);
 
-    console.log("instanceFlightDelayContract.address ", instanceFlightDelayContract.address);
 
     let options = {
         url: 'https://developer.fraport.de/api/flights/1.0/flightDetails/' + _airlinecode + '/' + _flightnumber + '/' + _originflightdate,
@@ -38,6 +37,7 @@ function requestApi(result) {
     };
 
     function callback(error, response, body) {
+        console.log("body",body)
         if (!error && response && response.statusCode == 200) {
             let info = JSON.parse(body);
             instanceFlightDelayContract.__callback(id, info[0].flight.flightStatus)
