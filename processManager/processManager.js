@@ -9,7 +9,7 @@ var gulp = require('gulp');
 require('../gulpfile');
 
 let host;
-if (process.env.nodeUrl.includes("localhost")) {
+if (process.env.nodeUrl && process.env.nodeUrl.includes("localhost")) {
     host = "localhost";
 } else {
     host = "contractdeployer";
