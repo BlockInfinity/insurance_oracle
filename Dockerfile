@@ -10,10 +10,9 @@ WORKDIR /src
 RUN npm install 
 RUN npm install -g gulp
 
+CMD node ./processManager/processManager.js
 
-CMD gulp run 
-# Start user in their source code directory...
-WORKDIR /src
+
 
 
 

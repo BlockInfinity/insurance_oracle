@@ -33,6 +33,7 @@ function checkAddresses() {
 
             console.log(`New contract addresses retrieved: ${JSON.stringify(addresses)}`);
 
+            // todo kein subprocess 
             cmd = spawn("/usr/local/bin/node", ["oracle.js"], {
                 env: {
                     Oracle: addresses.Oracle,
