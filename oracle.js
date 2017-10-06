@@ -5,7 +5,7 @@ const fs = require("fs");
 const Web3 = require("web3");
 const oracleAddress = process.env.Oracle;
 
-let urlNode = process.env.nodeUrl || "http://testrpc:8545";
+let urlNode = "http://testrpc:8545";
 let web3 = new Web3(new Web3.providers.HttpProvider(urlNode));
 
 console.log("process.env.nodeUrl",process.env.nodeUrl)
