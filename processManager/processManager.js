@@ -1,7 +1,6 @@
 'use strict';
 var figlet = require('figlet');
 const request = require('request');
-var chalk = require('chalk');
 var ChildProcess = require('child_process');
 var spawn = ChildProcess.spawn;
 var _ = require('underscore');
@@ -35,7 +34,7 @@ setInterval(checkAddresses, 15000);
 // ######### 
 function checkAddresses() {
     request('http://' + host + ':3001/getContractAddresses', (err, res, body) => {
-        if (err) { return console.log(chalk.red("Couldnt connect to the contractDeployer: " + err)); }
+        if (err) { return console.log("Couldnt connect to the contractDeployer: " + err); }
         let obj = JSON.parse(body);
         let newAddresses = obj.contractAddresses;
         if (obj.contractAddresses && !_.isEqual(newAddresses, addresses)) {
@@ -56,7 +55,7 @@ function checkAddresses() {
             });
 
             cmd.stderr.on('data', function(data) {
-                console.log(chalk.red(`stderr: ${data}`));
+                console.log(`stderr: ${data}`);
             });
 
             cmd.on('close', code => {
@@ -81,7 +80,7 @@ function checkAddresses() {
             });
 
             cmd.stderr.on('data', function(data) {
-                console.log(chalk.red(`stderr: ${data}`));
+                console.log(`stderr: ${data}`);
             });
 
             cmd.on('close', code => {
