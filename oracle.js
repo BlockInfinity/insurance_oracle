@@ -23,7 +23,7 @@ let instanceOracle = contract.at(oracleAddress);
 
 console.log("Connected to new Oracle instance: ", instanceOracle.address)
 
-instanceOracle.query(function(error, result) {
+instanceOracle.Query(function(error, result) {
     if (!error) {
         console.log("Query received.")
         requestApi(result);
