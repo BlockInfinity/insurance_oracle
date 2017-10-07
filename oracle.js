@@ -8,7 +8,7 @@ const oracleAddress = process.env.Oracle;
 let urlNode = "http://testrpc:8545";
 let web3 = new Web3(new Web3.providers.HttpProvider(urlNode));
 
-console.log("process.env.nodeUrl",process.env.nodeUrl)
+
 if (!web3.isConnected()) {
     throw new Error(`web3 is not connected to ${urlNode}`)
 }
@@ -21,43 +21,45 @@ abi_contract = JSON.parse(abi_contract).abi;
 let contract = web3.eth.contract(abi_contract);
 let instanceOracle = contract.at(oracleAddress);
 
-console.log("Connected to new Oracle instance: ", instanceOracle.address)
+console.log("Connected to Oracle Contract: ", instanceOracle.address)
 
 instanceOracle.Query(function(error, result) {
     if (!error) {
-        console.log("Query received.")
+        console.log("\n\nQuery received.\n\n")
         requestApi(result);
     } else { throw error; }
 })
 
 function requestApi(result) {
 
-    let _date = result.args._date
-    let _resortID = "13026";
-    let _appKey = "9fbe3edc7b00b36b25595ff55a0c1540";
-    let _appID = "5a2388f8";
+    let _airlinecode = result.args._airlinecode
+    let _flightnumber = result.args._flightnumber
+    let _originflightdate = result.args._originflightdate
+    let _accesstoken = result.args._accessToken
     let cbaddress = result.args.cbaddress
     let id = result.args.id
 
-    let abiPath = path.join(__dirname, 'insurance_contractDeployer', 'truffle', 'build', 'contracts', "BadWeatherContract.json");
+    console.log(`Requested status for flight: ${JSON.stringify({_airlinecode,_flightnumber, _originflightdate})}\n`)
+
+    let abiPath = path.join(__dirname, 'insurance_contractDeployer', 'truffle', 'build', 'contracts', "FlightDelayContract.json");
     let abi_contract = fs.readFileSync(abiPath).toString();
     abi_contract = JSON.parse(abi_contract).abi;
     let contract = web3.eth.contract(abi_contract);
-    let instanceBadWeatherContract = contract.at(cbaddress);
+    let instanceFlightDelayContract = contract.at(cbaddress);
 
 
     let options = {
-        url: 'https://api.weatherunlocked.com/api/snowreport/' + _resortID +'?app_id=' + _appID + '&app_key=' + _appKey,
+        url: 'https://developer.fraport.de/api/flights/1.0/flightDetails/' + _airlinecode + '/' + _flightnumber + '/' + _originflightdate,
         headers: {
-            "Accept": "application/json"
+            "Authorization": "Bearer " + _accesstoken
         }
     };
 
     function callback(error, response, body) {
-        console.log("Requested Weather API. Body:", body)
+        console.log(`Received Response from Fraport API: \n\n Body: ${body}`)
         if (!error && response && response.statusCode == 200) {
             let info = JSON.parse(body);
-            instanceBadWeatherContract.__callback_weather(id, (parseInt(info.uppersnow_cm)*100))
+            instanceFlightDelayContract.__callback(id, info[0].flight.flightStatus)
         }
     }
 

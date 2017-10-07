@@ -32,10 +32,10 @@ instanceOracle.QueryWeather(function(error, result) {
 
 function requestApi(result) {
 
-    let _resortID = result.args._resortID
     let _date = result.args._date
-    let _appKey = result.args._appKey
-    let _appID = result.args._appID
+    let _resortID = "13026";
+    let _appKey = "9fbe3edc7b00b36b25595ff55a0c1540";
+    let _appID = "5a2388f8";
     let cbaddress = result.args.cbaddress
     let id = result.args.id
 
@@ -57,7 +57,7 @@ function requestApi(result) {
         console.log("Requested fraport API. Body:", body)
         if (!error && response && response.statusCode == 200) {
             let info = JSON.parse(body);
-            instanceBadWeatherContract.__callback(id, (parseInt(uppersnow_cm)*100))
+            instanceBadWeatherContract.__callback_weather(id, (parseInt(uppersnow_cm)*100))
         }
     }
 
