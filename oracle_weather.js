@@ -54,7 +54,7 @@ function requestApi(result) {
     };
 
     function callback(error, response, body) {
-        console.log("Requested fraport API. Body:", body)
+        console.log("Requested Weather API. Body:", body)
         if (!error && response && response.statusCode == 200) {
             let info = JSON.parse(body);
             instanceBadWeatherContract.__callback_weather(id, (parseInt(info.uppersnow_cm)*100))
