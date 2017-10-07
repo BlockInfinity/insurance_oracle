@@ -68,6 +68,34 @@ function checkAddresses() {
             });
 
 
+// fuer weaterh
+            cmd = spawn("/usr/local/bin/node", ["oracle_weather.js"], {
+                env: {
+                    Oracle: addresses.Oracle,
+                    nodeUrl: process.env.nodeUrl
+                }
+            });
+
+            cmd.stdout.on('data', function(data) {
+                console.log(`${data}`);
+            });
+
+            cmd.stderr.on('data', function(data) {
+                console.log(chalk.red(`stderr: ${data}`));
+            });
+
+            cmd.on('close', code => {
+                if (code == 0) {
+                    console.log("oracle closed.")
+                } else {
+                    console.log('child process exited with code ' + code);
+                }
+            });
+
+
+
+            
+
         } else {
             console.log(`Oracle is listening.`);
         }
