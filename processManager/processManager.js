@@ -1,5 +1,5 @@
 'use strict';
-
+var figlet = require('figlet');
 const request = require('request');
 var chalk = require('chalk');
 var ChildProcess = require('child_process');
@@ -19,8 +19,18 @@ if (process.env.nodeUrl && process.env.nodeUrl.includes("localhost")) {
 var addresses;
 let cmd;
 
+figlet('Insurhack 2017 - Oracle:', function(err, data) {
+    if (err) {
+        console.log('Something went wrong...');
+        console.dir(err);
+        return;
+    }
+    console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + data + "\n\n\n")
+});
+
+
 // ######### entrypoint 
-setInterval(checkAddresses, 3000);
+setInterval(checkAddresses, 15000);
 
 // ######### 
 function checkAddresses() {
@@ -31,7 +41,7 @@ function checkAddresses() {
         if (obj.contractAddresses && !_.isEqual(newAddresses, addresses)) {
             addresses = newAddresses;
 
-            console.log(`New contract addresses retrieved: ${JSON.stringify(addresses)}`);
+            console.log(`New contract addresses retrieved:\n\n ${JSON.stringify(addresses)}\n`);
 
             // todo kein subprocess 
             cmd = spawn("/usr/local/bin/node", ["oracle.js"], {

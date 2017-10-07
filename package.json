@@ -7,6 +7,8 @@
     "start": "gulp run"
   },
   "dependencies": {
+    "chalk": "^2.1.0",
+    "figlet": "^1.2.0",
     "fs": "0.0.1-security",
     "gulp": "^3.9.1",
     "path": "^0.12.7",

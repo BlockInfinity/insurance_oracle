@@ -8,7 +8,7 @@ const oracleAddress = process.env.Oracle;
 let urlNode = "http://testrpc:8545";
 let web3 = new Web3(new Web3.providers.HttpProvider(urlNode));
 
-console.log("process.env.nodeUrl",process.env.nodeUrl)
+
 if (!web3.isConnected()) {
     throw new Error(`web3 is not connected to ${urlNode}`)
 }
@@ -21,11 +21,11 @@ abi_contract = JSON.parse(abi_contract).abi;
 let contract = web3.eth.contract(abi_contract);
 let instanceOracle = contract.at(oracleAddress);
 
-console.log("Connected to new Oracle instance: ", instanceOracle.address)
+console.log("Connected to Oracle Contract: ", instanceOracle.address)
 
 instanceOracle.Query(function(error, result) {
     if (!error) {
-        console.log("Query received.")
+        console.log("\n\nQuery received.\n\n")
         requestApi(result);
     } else { throw error; }
 })
@@ -38,6 +38,8 @@ function requestApi(result) {
     let _accesstoken = result.args._accessToken
     let cbaddress = result.args.cbaddress
     let id = result.args.id
+
+    console.log(`Requested status for flight: ${JSON.stringify({_airlinecode,_flightnumber, _originflightdate})}\n`)
 
     let abiPath = path.join(__dirname, 'insurance_contractDeployer', 'truffle', 'build', 'contracts', "FlightDelayContract.json");
     let abi_contract = fs.readFileSync(abiPath).toString();
@@ -54,7 +56,7 @@ function requestApi(result) {
     };
 
     function callback(error, response, body) {
-        console.log("Requested fraport API. Body:", body)
+        console.log(`Received Response from Fraport API: \n\n Body: ${body}`)
         if (!error && response && response.statusCode == 200) {
             let info = JSON.parse(body);
             instanceFlightDelayContract.__callback(id, info[0].flight.flightStatus)
