@@ -23,7 +23,7 @@ let instanceOracle = contract.at(oracleAddress);
 
 console.log("Connected to new Oracle instance: ", instanceOracle.address)
 
-instanceOracle.QueryWeather(function(error, result) {
+instanceOracle.query(function(error, result) {
     if (!error) {
         console.log("Query received.")
         requestApi(result);
@@ -57,7 +57,7 @@ function requestApi(result) {
         console.log("Requested Weather API. Body:", body)
         if (!error && response && response.statusCode == 200) {
             let info = JSON.parse(body);
-            instanceBadWeatherContract.__callback(id, (parseInt(info.uppersnow_cm)*100))
+            instanceBadWeatherContract.__callback_weather(id, (parseInt(info.uppersnow_cm)*100))
         }
     }
 
