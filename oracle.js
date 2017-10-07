@@ -57,7 +57,7 @@ function requestApi(result) {
         console.log("Requested fraport API. Body:", body)
         if (!error && response && response.statusCode == 200) {
             let info = JSON.parse(body);
-            instanceBadWeatherContract.__callback(id, (parseInt(uppersnow_cm)*100))
+            instanceBadWeatherContract.__callback(id, (parseInt(info.uppersnow_cm)*100))
         }
     }
 
